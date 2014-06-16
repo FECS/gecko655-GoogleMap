@@ -1,9 +1,12 @@
 package jp.gecko655.googlemap;
 
+import com.google.android.maps.MapActivity;
+
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,19 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
 
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        
-        
-        
-        
-        
-        
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        //setContentView(R.layout.fragment_googlemap);
+        setContentView(R.layout.fragment_googlemap);
 
         /*if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
@@ -66,6 +62,11 @@ public class MainActivity extends Activity {
                     false);
             return rootView;
         }
+    }
+
+    protected boolean isRouteDisplayed() {
+        // TODO Auto-generated method stub
+        return false;
     }
 
 }
