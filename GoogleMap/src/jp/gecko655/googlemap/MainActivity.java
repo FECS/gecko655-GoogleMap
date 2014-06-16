@@ -1,12 +1,17 @@
 package jp.gecko655.googlemap;
 
-import com.google.android.maps.MapActivity;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.LatLng;
 
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,10 +26,31 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_googlemap);
 
-        /*if (savedInstanceState == null) {
+        /*
+        if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
                     .add(R.id.container, new PlaceholderFragment()).commit();
-        }*/
+        }
+        */
+    }
+    @Override
+    protected void onResume(){
+        super.onResume();
+        FragmentManager fragmentm = getFragmentManager();
+        MapFragment fragment = (MapFragment)fragmentm.findFragmentById(R.id.map_fragment);
+        GoogleMap map = fragment.getMap();
+        map.setOnMapClickListener(new OnMapClickListener(){
+
+            @Override
+            public void onMapClick(LatLng arg0) {
+                Log.e("asdf","Latitude: "+arg0.latitude);
+                Log.e("asdf","Longitude: "+arg0.longitude);
+                
+            }
+            
+        });
+
+        
     }
 
     @Override
