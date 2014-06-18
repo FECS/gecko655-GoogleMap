@@ -1,9 +1,12 @@
 package jp.gecko655.googlemap;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -11,6 +14,9 @@ import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -39,8 +45,28 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onResume(){
         super.onResume();
-        MapFragment mapFragment = (MapFragment)getFragmentManager().findFragmentById(R.id.map_fragment);;
+        MapFragment mapFragment = (MapFragment)getFragmentManager().findFragmentById(R.id.map_fragment);
         googleMap = mapFragment.getMap();
+        LocationManager mgr = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        Location myLocation = mgr.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        if (myLocation == null)
+            myLocation = mgr.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+        if(myLocation!=null){
+            LatLng latLng =new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
+            CameraPosition.Builder position = CameraPosition.builder()
+                .tilt(0f)
+                .bearing(0f)
+                .target(latLng)
+                .zoom(18.0f);
+            CameraUpdate update = CameraUpdateFactory.newCameraPosition(position.build());
+            googleMap.moveCamera(update);
+        	googleMap.addMarker(new MarkerOptions()
+                .position(latLng)
+                .title("緯度: " +latLng.latitude)
+            );
+            TextView textView = (TextView) findViewById(R.id.textView1);
+            textView.setText("経度: "+latLng.longitude);
+        }
         googleMap.setOnMapLongClickListener(new OnMapLongClickListener(){
 
             @Override
