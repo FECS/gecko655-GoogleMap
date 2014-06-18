@@ -23,7 +23,6 @@ import android.widget.TextView;
 import android.os.Build;
 
 public class MainActivity extends FragmentActivity {
-    private MapFragment mapFragment;
     private GoogleMap googleMap;
 
     @Override
@@ -31,18 +30,16 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-        /* make and store map*/
-        mapFragment = new MapFragment();
 
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
-                    .add(R.id.container, mapFragment)
                     .add(R.id.container, new PlaceholderFragment()).commit();
         }
     }
     @Override
     protected void onResume(){
         super.onResume();
+        MapFragment mapFragment = (MapFragment)getFragmentManager().findFragmentById(R.id.map_fragment);;
         googleMap = mapFragment.getMap();
         googleMap.setOnMapLongClickListener(new OnMapLongClickListener(){
 
